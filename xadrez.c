@@ -7,6 +7,7 @@ int comparaDuasStringCaseInsensitive(char *string1, char *string2);
 void moveTorre();
 void moveBispo();
 void moveRainha();
+void moveCavalo();
 
 void moverCima();
 void moverBaixo();
@@ -14,41 +15,17 @@ void moverEsquerda();
 void moverDireita();
 void moverDiagonalDireitaCima();
 
-// Desafio de Xadrez - MateCheck
-// Este código inicial serve como base para o desenvolvimento do sistema de movimentação das peças de xadrez.
-// O objetivo é utilizar estruturas de repetição e funções para determinar os limites de movimentação dentro do jogo.
+void inicia();
 
 int numMovimentacaoTorre = 5;
 int numMovimentacaoBispo = 5;
 int numMovimentacaoRainha = 8;
 
+int numMovimentoCavaloVertical = 2;
+int numMovimentoCavaloHorizontal = 1;
+
 int main()
 {
-    // Nível Novato - Movimentação das Peças
-    // Sugestão: Declare variáveis constantes para representar o número de casas que cada peça pode se mover.
-
-    // Implementação de Movimentação do Bispo
-    // Sugestão: Utilize uma estrutura de repetição para simular a movimentação do Bispo em diagonal.
-
-    // Implementação de Movimentação da Torre
-    // Sugestão: Utilize uma estrutura de repetição para simular a movimentação da Torre para a direita.
-
-    // Implementação de Movimentação da Rainha
-    // Sugestão: Utilize uma estrutura de repetição para simular a movimentação da Rainha para a esquerda.
-
-    // Nível Aventureiro - Movimentação do Cavalo
-    // Sugestão: Utilize loops aninhados para simular a movimentação do Cavalo em L.
-    // Um loop pode representar a movimentação horizontal e outro vertical.
-
-    // Nível Mestre - Funções Recursivas e Loops Aninhados
-    // Sugestão: Substitua as movimentações das peças por funções recursivas.
-    // Exemplo: Crie uma função recursiva para o movimento do Bispo.
-
-    // Sugestão: Implemente a movimentação do Cavalo utilizando loops com variáveis múltiplas e condições avançadas.
-    // Inclua o uso de continue e break dentro dos loops.
-
-    // aqui ira simular a movimentação da torre (5 casos para a esquerda)
-
    inicia();
     
     return 0;
@@ -73,6 +50,11 @@ void inicia(){
     if(comparaDuasStringCaseInsensitive(inputUsuario, "rainha") == 1){
         moveRainha();
         return; 
+    }
+
+    if(comparaDuasStringCaseInsensitive(inputUsuario, "cavalo") == 1){
+        moveCavalo();
+        return;
     }
 
     printf("Nenhuma das opções que você escolheu são disponíveis\n\n\n");
@@ -110,6 +92,26 @@ void moveRainha()
         accDoWhile++;
 
     } while (numMovimentacaoRainha > accDoWhile);
+}
+
+void moveCavalo()
+{
+    printf("\n");
+
+    for (int i = 0; i < numMovimentoCavaloVertical; i++)
+    {
+        moverBaixo();
+
+        if (i == numMovimentoCavaloVertical - 1)
+        {
+            int j = 0;
+            while (j < numMovimentoCavaloHorizontal)
+            {
+                moverEsquerda();
+                j++;
+            }
+        }
+    }
 }
 
 void moverCima()
