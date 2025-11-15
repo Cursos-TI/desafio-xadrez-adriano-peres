@@ -9,11 +9,15 @@ void moveBispo();
 void moveRainha();
 void moveCavalo();
 
+void moveTorreRecursivo(int casasRestantes);
+void moveRainhaRecursivo(int casasRestantes);
+void moveBispoRecursivo(int casasRestantes);
+void moveBispoComLoopsAninhados();
+
 void moverCima();
 void moverBaixo();
 void moverEsquerda();
 void moverDireita();
-void moverDiagonalDireitaCima();
 
 void inicia();
 
@@ -27,6 +31,9 @@ int numMovimentoCavaloHorizontal = 1;
 int main()
 {
    inicia();
+
+   int unsigned ad;
+   printf("sizeof is %d", &ad);
     
     return 0;
 }
@@ -61,55 +68,90 @@ void inicia(){
     inicia();
 }
 
+void moveTorreRecursivo(int casasRestantes)
+{
+    if (casasRestantes <= 0)
+    {
+        return;
+    }
+    moverEsquerda();
+    moveTorreRecursivo(casasRestantes - 1);
+}
+
 void moveTorre()
 {
+    printf("\nMovimento da Torre (Recursivo):\n");
+    moveTorreRecursivo(numMovimentacaoTorre);
+}
 
-    for (int i = 0; i < numMovimentacaoTorre; i++)
+void moveBispoRecursivo(int casasRestantes)
+{
+    if (casasRestantes <= 0)
     {
-        moverEsquerda();
+        return;
     }
+    moverCima();
+    moverDireita();
+    moveBispoRecursivo(casasRestantes - 1);
+}
 
+void moveBispoComLoopsAninhados()
+{
+    int i, j;
+    for (i = 0; i < numMovimentacaoBispo; i++)
+    {
+        moverCima();
+        for (j = 0; j < 1; j++)
+        {
+             moverDireita();
+        }
+    }
 }
 
 void moveBispo()
 {
+    printf("\nMovimento do Bispo (Recursivo):\n");
+    moveBispoRecursivo(numMovimentacaoBispo);
 
-    int acc = 0;
-    while (acc < numMovimentacaoBispo)
+    printf("\nMovimento do Bispo (Loops Aninhados):\n");
+    moveBispoComLoopsAninhados();
+}
+
+void moveRainhaRecursivo(int casasRestantes)
+{
+    if (casasRestantes <= 0)
     {
-        moverDiagonalDireitaCima();
-        acc++;
+        return;
     }
+    moverEsquerda();
+    moveRainhaRecursivo(casasRestantes - 1);
 }
 
 void moveRainha()
 {
-    int accDoWhile = 0;
-
-    do
-    {
-        moverEsquerda();
-        accDoWhile++;
-
-    } while (numMovimentacaoRainha > accDoWhile);
+    printf("\nMovimento da Rainha (Recursivo):\n");
+    moveRainhaRecursivo(numMovimentacaoRainha);
 }
 
 void moveCavalo()
 {
-    printf("\n");
+    printf("\nMovimento do Cavalo (Loops Complexos):\n");
+    int vertical, horizontal;
 
-    for (int i = 0; i < numMovimentoCavaloVertical; i++)
+    for (vertical = 0; vertical < numMovimentoCavaloVertical; vertical++)
     {
-        moverBaixo();
-
-        if (i == numMovimentoCavaloVertical - 1)
+        if (vertical < numMovimentoCavaloVertical - 1)
         {
-            int j = 0;
-            while (j < numMovimentoCavaloHorizontal)
-            {
-                moverEsquerda();
-                j++;
-            }
+            moverCima();
+            continue;
+        }
+
+        moverCima();
+
+        for (horizontal = 0; horizontal < numMovimentoCavaloHorizontal; horizontal++)
+        {
+            moverDireita();
+            break;
         }
     }
 }
@@ -132,11 +174,6 @@ void moverEsquerda()
 void moverDireita()
 {
     printf("Direita\n");
-}
-
-void moverDiagonalDireitaCima()
-{
-    printf("Direita, Cima\n");
 }
 
 int comparaDuasStringCaseInsensitive(char *string1, char *string2)
